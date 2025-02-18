@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Wiggle 2",
-    "author": "Steve Miller",
-    "version": (2, 2, 4),
+    "author": "Steve Miller & David Zhang",
+    "version": (2, 2, 6),
     "blender": (3, 0, 0),
     "location": "3D Viewport > Animation Panel",
     "description": "Simulate spring-like physics on Bone transforms",
