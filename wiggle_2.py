@@ -560,57 +560,62 @@ def wiggle_load(scene):
     build_list()
     s = bpy.context.scene
     s.wiggle.is_rendering = False
-            
+
+# Fixed by cxz for Blender 4.2 (Feb 04, 2022)
 class WiggleCopy(bpy.types.Operator):
     """Copy active wiggle settings to selected bones"""
     bl_idname = "wiggle.copy"
     bl_label = "Copy Settings to Selected"
     
     @classmethod
-    def poll(cls,context):
-        return context.mode in ['POSE'] and context.active_pose_bone and (len(context.selected_pose_bones)>1)
+    def poll(cls, context):
+        return (context.mode in ['POSE'] and
+                context.active_pose_bone is not None and
+                len(context.selected_pose_bones) > 1)
     
-    def execute(self,context):
-        b = context.active_pose_bone
-#        b.wiggle_enable = b.wiggle_enable
-        b.wiggle_mute = b.wiggle_mute
-        b.wiggle_head = b.wiggle_head
-        b.wiggle_tail = b.wiggle_tail
-        b.wiggle_head_mute = b.wiggle_head_mute
-        b.wiggle_tail_mute = b.wiggle_tail_mute
-        
-        b.wiggle_mass = b.wiggle_mass
-        b.wiggle_stiff = b.wiggle_stiff
-        b.wiggle_stretch = b.wiggle_stretch
-        b.wiggle_damp = b.wiggle_damp
-        b.wiggle_gravity = b.wiggle_gravity
-        b.wiggle_wind_ob = b.wiggle_wind_ob
-        b.wiggle_wind = b.wiggle_wind
-        b.wiggle_collider_type = b.wiggle_collider_type
-        b.wiggle_collider = b.wiggle_collider
-        b.wiggle_collider_collection = b.wiggle_collider_collection
-        b.wiggle_radius = b.wiggle_radius
-        b.wiggle_friction = b.wiggle_friction
-        b.wiggle_bounce = b.wiggle_bounce
-        b.wiggle_sticky = b.wiggle_sticky
-        b.wiggle_chain = b.wiggle_chain
-        
-        b.wiggle_mass_head = b.wiggle_mass_head
-        b.wiggle_stiff_head = b.wiggle_stiff_head
-        b.wiggle_stretch_head = b.wiggle_stretch_head
-        b.wiggle_damp_head = b.wiggle_damp_head
-        b.wiggle_gravity_head = b.wiggle_gravity_head
-        b.wiggle_wind_ob_head = b.wiggle_wind_ob_head
-        b.wiggle_wind_head = b.wiggle_wind_head
-        b.wiggle_collider_type_head = b.wiggle_collider_type_head
-        b.wiggle_collider_head = b.wiggle_collider_head
-        b.wiggle_collider_collection_head = b.wiggle_collider_collection_head
-        b.wiggle_radius_head = b.wiggle_radius_head
-        b.wiggle_friction_head = b.wiggle_friction_head
-        b.wiggle_bounce_head = b.wiggle_bounce_head
-        b.wiggle_sticky_head = b.wiggle_sticky_head
-        b.wiggle_chain_head = b.wiggle_chain_head
+    def execute(self, context):
+        active = context.active_pose_bone
+        for bone in context.selected_pose_bones:
+            if bone != active:
+                bone.wiggle_mute = active.wiggle_mute
+                bone.wiggle_head = active.wiggle_head
+                bone.wiggle_tail = active.wiggle_tail
+                bone.wiggle_head_mute = active.wiggle_head_mute
+                bone.wiggle_tail_mute = active.wiggle_tail_mute
+
+                bone.wiggle_mass = active.wiggle_mass
+                bone.wiggle_stiff = active.wiggle_stiff
+                bone.wiggle_stretch = active.wiggle_stretch
+                bone.wiggle_damp = active.wiggle_damp
+                bone.wiggle_gravity = active.wiggle_gravity
+                bone.wiggle_wind_ob = active.wiggle_wind_ob
+                bone.wiggle_wind = active.wiggle_wind
+                bone.wiggle_collider_type = active.wiggle_collider_type
+                bone.wiggle_collider = active.wiggle_collider
+                bone.wiggle_collider_collection = active.wiggle_collider_collection
+                bone.wiggle_radius = active.wiggle_radius
+                bone.wiggle_friction = active.wiggle_friction
+                bone.wiggle_bounce = active.wiggle_bounce
+                bone.wiggle_sticky = active.wiggle_sticky
+                bone.wiggle_chain = active.wiggle_chain
+
+                bone.wiggle_mass_head = active.wiggle_mass_head
+                bone.wiggle_stiff_head = active.wiggle_stiff_head
+                bone.wiggle_stretch_head = active.wiggle_stretch_head
+                bone.wiggle_damp_head = active.wiggle_damp_head
+                bone.wiggle_gravity_head = active.wiggle_gravity_head
+                bone.wiggle_wind_ob_head = active.wiggle_wind_ob_head
+                bone.wiggle_wind_head = active.wiggle_wind_head
+                bone.wiggle_collider_type_head = active.wiggle_collider_type_head
+                bone.wiggle_collider_head = active.wiggle_collider_head
+                bone.wiggle_collider_collection_head = active.wiggle_collider_collection_head
+                bone.wiggle_radius_head = active.wiggle_radius_head
+                bone.wiggle_friction_head = active.wiggle_friction_head
+                bone.wiggle_bounce_head = active.wiggle_bounce_head
+                bone.wiggle_sticky_head = active.wiggle_sticky_head
+                bone.wiggle_chain_head = active.wiggle_chain_head
         return {'FINISHED'}
+
 
 class WiggleReset(bpy.types.Operator):
     """Reset scene wiggle physics to rest state"""
