@@ -1,3 +1,6 @@
+# Zipped addon package
+wiggle.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
